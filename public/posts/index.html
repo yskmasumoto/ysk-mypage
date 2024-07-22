@@ -30,26 +30,26 @@
 
     
     
-      <link href="/index.xml" rel="alternate" type="application/rss+xml" title="ysk-mypage" />
-      <link href="/index.xml" rel="feed" type="application/rss+xml" title="ysk-mypage" />
+      <link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="ysk-mypage" />
+      <link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="ysk-mypage" />
       
     
 
     
-      <link rel="canonical" href="https://yskmasumoto.github.io/">
+      <link rel="canonical" href="https://yskmasumoto.github.io/posts/">
     
 
-    <meta property="og:url" content="https://yskmasumoto.github.io/">
+    <meta property="og:url" content="https://yskmasumoto.github.io/posts/">
   <meta property="og:site_name" content="ysk-mypage">
-  <meta property="og:title" content="ysk-mypage">
+  <meta property="og:title" content="Posts">
   <meta property="og:locale" content="ja_jp">
   <meta property="og:type" content="website">
 
-  <meta itemprop="name" content="ysk-mypage">
+  <meta itemprop="name" content="Posts">
   <meta itemprop="datePublished" content="2024-07-22T21:29:04+09:00">
   <meta itemprop="dateModified" content="2024-07-22T21:29:04+09:00">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="ysk-mypage">
+  <meta name="twitter:title" content="Posts">
 
 	
   </head>
@@ -82,7 +82,7 @@
 
       <div class="tc-l pv3 ph3 ph4-ns">
         <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
-          ysk-mypage
+          Posts
         </h1>
         
       </div>
@@ -92,65 +92,30 @@
 
     <main class="pb7" role="main">
       
-  <article class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
+  <article class="pa3 pa4-ns nested-copy-line-height">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+    <section class="flex-ns flex-wrap justify-around mt5">
       
-    </article>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      <div class="pa3 pa4-ns w-100 w-70-ns center">
-        
-        
-            <h1 class="flex-none">
-              Recent Posts
-            </h1>
-          
-
-        
-
-        <section class="w-100 mw8">
-          
-          
-            <div class="relative w-100 mb4">
-              
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
-    <div class="flex flex-column flex-row-ns">
-      
-      <div class="blah w-100">
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/posts/aws-powertools-logger-tips/" class="color-inherit dim link">
-            AWS Lambda Powertools Logger TypeErrorの解決
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          AWS Lambda Powertools Logger TypeErrorの解決 エラー内容 TypeError: aws_lambda_powertools.logging.logger.Logger._init_logger() got multiple values for keyword argument &#39;log_level&#39; エラーの原因 このエラーは通常、Loggerクラスのインスタンス化時にlog_levelパラメータが重複して指定されている場合に発生します。以下の状況で起こる可能性があります：
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/posts/aws-powertools-logger-tips/" class="link black dim">
+        AWS Lambda Powertools Logger TypeErrorの解決
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      AWS Lambda Powertools Logger TypeErrorの解決 エラー内容 TypeError: aws_lambda_powertools.logging.logger.Logger._init_logger() got multiple values for keyword argument &#39;log_level&#39; エラーの原因 このエラーは通常、Loggerクラスのインスタンス化時にlog_levelパラメータが重複して指定されている場合に発生します。以下の状況で起こる可能性があります：
 コード内で複数回Loggerインスタンスを作成し、それぞれでlog_levelを指定している。 環境変数LOG_LEVELが設定されている状態で、コード内でもlog_levelを指定している。 デコレータ@logger.inject_lambda_contextでlog_levelを指定し、同時にLoggerインスタンス作成時にも指定している。 解決方法 1. Loggerインスタンスの一元管理 アプリケーション全体で単一のLoggerインスタンスを使用します。 可能な限り、Loggerインスタンスを作成する場所を1箇所に限定します。 from aws_lambda_powertools import Logger logger = Logger() # 他のモジュールやクラスでこのloggerを再利用 2. 環境変数の活用 LOG_LEVEL環境変数を使用してログレベルを制御します。 コード内でlog_levelを指定する代わりに、環境変数に依存します。 # 環境変数 LOG_LEVEL を設定し、コードでは指定しない logger = Logger() 3. デコレータの適切な使用 @logger.inject_lambda_contextデコレータを使用する場合、デコレータ内でlog_levelを指定せず、Loggerインスタンス化時にのみ指定します。 logger = Logger(log_level=&#34;INFO&#34;) @logger.inject_lambda_context(log_event=True) def handler(event, context): logger.info(&#34;This is an info message&#34;) 4. 依存性注入パターンの採用 Loggerインスタンスを外部から注入できるようにクラスを設計します。 class SQS: def __init__(self, queue_url: str, logger: Logger = None): self.
-        </div>
-          <a href="/posts/aws-powertools-logger-tips/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-        
-      </div>
     </div>
+    <a href="/posts/aws-powertools-logger-tips/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
   </div>
-</article>
-
-            </div>
-          
-        </section>
-
-        
+</div>
 
         </div>
-    
-  
+      
+    </section></article>
 
     </main>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">

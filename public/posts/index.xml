@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ysk-mypage</title>
-    <link>https://yskmasumoto.github.io/</link>
-    <description>Recent content on ysk-mypage</description>
+    <title>Posts on ysk-mypage</title>
+    <link>https://yskmasumoto.github.io/posts/</link>
+    <description>Recent content in Posts on ysk-mypage</description>
     <generator>Hugo</generator>
     <language>ja-jp</language>
     <lastBuildDate>Mon, 22 Jul 2024 21:29:04 +0900</lastBuildDate>
-    <atom:link href="https://yskmasumoto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://yskmasumoto.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS Lambda Powertools Logger TypeErrorの解決</title>
       <link>https://yskmasumoto.github.io/posts/aws-powertools-logger-tips/</link>
