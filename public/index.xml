@@ -6,8 +6,15 @@
     <description>Recent content on ysk-mypage</description>
     <generator>Hugo</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 22 Jul 2024 21:29:04 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jul 2024 21:22:57 +0900</lastBuildDate>
     <atom:link href="https://yskmasumoto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ELB/ECS構成のAPIトラブルシューティング要約</title>
+      <link>https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/</link>
+      <pubDate>Tue, 23 Jul 2024 21:22:57 +0900</pubDate>
+      <guid>https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/</guid>
+      <description>筆者がAIにした質問内容 curlでELB, ECS構成のAPIを呼び出すと503エラーが返ってくる問題の解決方法 ELBのポート番号の確認方法 DockerfileのCMD部分とELBの設定の不一致に関する質問 ECSのタスク定義のCloudFormationに関する質問 uvicornのポート変更後もcurlで503エラーが発生する問題の解決方法 解決プロセス ECSタスクの状態確認（稼働状況、エラーログ、ヘルスチェック設定） Dockerfileの確認と改善提案 ELBの設定確認（ポート番号、リスナー設定） ECSタスク定義の確認とDockerfileとの整合性チェック ポートマッピングの修正（8000から80へ） セキュリティグループ、ネットワーク設定の確認 アプリケーションログとELBアクセスログの確認 ロードバランサーのリスナールール優先度の確認 原因 DockerfileとECSタスク定義のポート設定の不一致（8000 vs 80） ロードバランサーのリスナールール優先度設定ミス（v1とv2のルーティング） 再発防止策 Dockerfileとタスク定義の一貫性確保 デプロイ前の設定チェックリストの作成と使用 自動テストの導入（ルーティングチェック等） ブルー/グリーンデプロイメント戦略の採用 インフラストラクチャのコード化（IaC） 定期的な設定レビューの実施 問題と解決策の文書化とチーム内共有 関連キーワード ELB (Elastic Load Balancer) ECS (Elastic Container Service) Docker uvicorn CloudFormation ポートマッピング セキュリティグループ ヘルスチェック リスナールール ロードバランサー優先度設定 Continuous Integration/Continuous Deployment (CI/CD) Infrastructure as Code (IaC) ブルー/グリーンデプロイメント </description>
+    </item>
     <item>
       <title>AWS Lambda Powertools Logger TypeErrorの解決</title>
       <link>https://yskmasumoto.github.io/posts/aws-powertools-logger-tips/</link>

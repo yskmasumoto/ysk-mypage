@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>ELB/ECS構成のAPIトラブルシューティング要約 | ysk-mypage</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="筆者がAIにした質問内容 curlでELB, ECS構成のAPIを呼び出すと503エラーが返ってくる問題の解決方法 ELBのポート番号の確認方法 DockerfileのCMD部分とELBの設定の不一致に関する質問 ECSのタスク定義のCloudFormationに関する質問 uvicornのポート変更後もcurlで503エラーが発生する問題の解決方法 解決プロセス ECSタスクの状態確認（稼働状況、エラーログ、ヘルスチェック設定） Dockerfileの確認と改善提案 ELBの設定確認（ポート番号、リスナー設定） ECSタスク定義の確認とDockerfileとの整合性チェック ポートマッピングの修正（8000から80へ） セキュリティグループ、ネットワーク設定の確認 アプリケーションログとELBアクセスログの確認 ロードバランサーのリスナールール優先度の確認 原因 DockerfileとECSタスク定義のポート設定の不一致（8000 vs 80） ロードバランサーのリスナールール優先度設定ミス（v1とv2のルーティング） 再発防止策 Dockerfileとタスク定義の一貫性確保 デプロイ前の設定チェックリストの作成と使用 自動テストの導入（ルーティングチェック等） ブルー/グリーンデプロイメント戦略の採用 インフラストラクチャのコード化（IaC） 定期的な設定レビューの実施 問題と解決策の文書化とチーム内共有 関連キーワード ELB (Elastic Load Balancer) ECS (Elastic Container Service) Docker uvicorn CloudFormation ポートマッピング セキュリティグループ ヘルスチェック リスナールール ロードバランサー優先度設定 Continuous Integration/Continuous Deployment (CI/CD) Infrastructure as Code (IaC) ブルー/グリーンデプロイメント ">
+    <meta name="generator" content="Hugo 0.129.0">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/">
+    
+
+    <meta property="og:url" content="https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/">
+  <meta property="og:site_name" content="ysk-mypage">
+  <meta property="og:title" content="ELB/ECS構成のAPIトラブルシューティング要約">
+  <meta property="og:description" content="筆者がAIにした質問内容 curlでELB, ECS構成のAPIを呼び出すと503エラーが返ってくる問題の解決方法 ELBのポート番号の確認方法 DockerfileのCMD部分とELBの設定の不一致に関する質問 ECSのタスク定義のCloudFormationに関する質問 uvicornのポート変更後もcurlで503エラーが発生する問題の解決方法 解決プロセス ECSタスクの状態確認（稼働状況、エラーログ、ヘルスチェック設定） Dockerfileの確認と改善提案 ELBの設定確認（ポート番号、リスナー設定） ECSタスク定義の確認とDockerfileとの整合性チェック ポートマッピングの修正（8000から80へ） セキュリティグループ、ネットワーク設定の確認 アプリケーションログとELBアクセスログの確認 ロードバランサーのリスナールール優先度の確認 原因 DockerfileとECSタスク定義のポート設定の不一致（8000 vs 80） ロードバランサーのリスナールール優先度設定ミス（v1とv2のルーティング） 再発防止策 Dockerfileとタスク定義の一貫性確保 デプロイ前の設定チェックリストの作成と使用 自動テストの導入（ルーティングチェック等） ブルー/グリーンデプロイメント戦略の採用 インフラストラクチャのコード化（IaC） 定期的な設定レビューの実施 問題と解決策の文書化とチーム内共有 関連キーワード ELB (Elastic Load Balancer) ECS (Elastic Container Service) Docker uvicorn CloudFormation ポートマッピング セキュリティグループ ヘルスチェック リスナールール ロードバランサー優先度設定 Continuous Integration/Continuous Deployment (CI/CD) Infrastructure as Code (IaC) ブルー/グリーンデプロイメント ">
+  <meta property="og:locale" content="ja_jp">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-23T21:22:57+09:00">
+    <meta property="article:modified_time" content="2024-07-23T21:22:57+09:00">
+
+  <meta itemprop="name" content="ELB/ECS構成のAPIトラブルシューティング要約">
+  <meta itemprop="description" content="筆者がAIにした質問内容 curlでELB, ECS構成のAPIを呼び出すと503エラーが返ってくる問題の解決方法 ELBのポート番号の確認方法 DockerfileのCMD部分とELBの設定の不一致に関する質問 ECSのタスク定義のCloudFormationに関する質問 uvicornのポート変更後もcurlで503エラーが発生する問題の解決方法 解決プロセス ECSタスクの状態確認（稼働状況、エラーログ、ヘルスチェック設定） Dockerfileの確認と改善提案 ELBの設定確認（ポート番号、リスナー設定） ECSタスク定義の確認とDockerfileとの整合性チェック ポートマッピングの修正（8000から80へ） セキュリティグループ、ネットワーク設定の確認 アプリケーションログとELBアクセスログの確認 ロードバランサーのリスナールール優先度の確認 原因 DockerfileとECSタスク定義のポート設定の不一致（8000 vs 80） ロードバランサーのリスナールール優先度設定ミス（v1とv2のルーティング） 再発防止策 Dockerfileとタスク定義の一貫性確保 デプロイ前の設定チェックリストの作成と使用 自動テストの導入（ルーティングチェック等） ブルー/グリーンデプロイメント戦略の採用 インフラストラクチャのコード化（IaC） 定期的な設定レビューの実施 問題と解決策の文書化とチーム内共有 関連キーワード ELB (Elastic Load Balancer) ECS (Elastic Container Service) Docker uvicorn CloudFormation ポートマッピング セキュリティグループ ヘルスチェック リスナールール ロードバランサー優先度設定 Continuous Integration/Continuous Deployment (CI/CD) Infrastructure as Code (IaC) ブルー/グリーンデプロイメント ">
+  <meta itemprop="datePublished" content="2024-07-23T21:22:57+09:00">
+  <meta itemprop="dateModified" content="2024-07-23T21:22:57+09:00">
+  <meta itemprop="wordCount" content="55">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ELB/ECS構成のAPIトラブルシューティング要約">
+  <meta name="twitter:description" content="筆者がAIにした質問内容 curlでELB, ECS構成のAPIを呼び出すと503エラーが返ってくる問題の解決方法 ELBのポート番号の確認方法 DockerfileのCMD部分とELBの設定の不一致に関する質問 ECSのタスク定義のCloudFormationに関する質問 uvicornのポート変更後もcurlで503エラーが発生する問題の解決方法 解決プロセス ECSタスクの状態確認（稼働状況、エラーログ、ヘルスチェック設定） Dockerfileの確認と改善提案 ELBの設定確認（ポート番号、リスナー設定） ECSタスク定義の確認とDockerfileとの整合性チェック ポートマッピングの修正（8000から80へ） セキュリティグループ、ネットワーク設定の確認 アプリケーションログとELBアクセスログの確認 ロードバランサーのリスナールール優先度の確認 原因 DockerfileとECSタスク定義のポート設定の不一致（8000 vs 80） ロードバランサーのリスナールール優先度設定ミス（v1とv2のルーティング） 再発防止策 Dockerfileとタスク定義の一貫性確保 デプロイ前の設定チェックリストの作成と使用 自動テストの導入（ルーティングチェック等） ブルー/グリーンデプロイメント戦略の採用 インフラストラクチャのコード化（IaC） 定期的な設定レビューの実施 問題と解決策の文書化とチーム内共有 関連キーワード ELB (Elastic Load Balancer) ECS (Elastic Container Service) Docker uvicorn CloudFormation ポートマッピング セキュリティグループ ヘルスチェック リスナールール ロードバランサー優先度設定 Continuous Integration/Continuous Deployment (CI/CD) Infrastructure as Code (IaC) ブルー/グリーンデプロイメント ">
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        ysk-mypage
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">ELB/ECS構成のAPIトラブルシューティング要約</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2024-07-23T21:22:57+09:00">July 23, 2024</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="筆者がaiにした質問内容">筆者がAIにした質問内容</h2>
+<ol>
+<li>curlでELB, ECS構成のAPIを呼び出すと503エラーが返ってくる問題の解決方法</li>
+<li>ELBのポート番号の確認方法</li>
+<li>Dockerfileの<code>CMD</code>部分とELBの設定の不一致に関する質問</li>
+<li>ECSのタスク定義のCloudFormationに関する質問</li>
+<li>uvicornのポート変更後もcurlで503エラーが発生する問題の解決方法</li>
+</ol>
+<h2 id="解決プロセス">解決プロセス</h2>
+<ol>
+<li>ECSタスクの状態確認（稼働状況、エラーログ、ヘルスチェック設定）</li>
+<li>Dockerfileの確認と改善提案</li>
+<li>ELBの設定確認（ポート番号、リスナー設定）</li>
+<li>ECSタスク定義の確認とDockerfileとの整合性チェック</li>
+<li>ポートマッピングの修正（8000から80へ）</li>
+<li>セキュリティグループ、ネットワーク設定の確認</li>
+<li>アプリケーションログとELBアクセスログの確認</li>
+<li>ロードバランサーのリスナールール優先度の確認</li>
+</ol>
+<h2 id="原因">原因</h2>
+<ol>
+<li>DockerfileとECSタスク定義のポート設定の不一致（8000 vs 80）</li>
+<li>ロードバランサーのリスナールール優先度設定ミス（v1とv2のルーティング）</li>
+</ol>
+<h2 id="再発防止策">再発防止策</h2>
+<ol>
+<li>Dockerfileとタスク定義の一貫性確保</li>
+<li>デプロイ前の設定チェックリストの作成と使用</li>
+<li>自動テストの導入（ルーティングチェック等）</li>
+<li>ブルー/グリーンデプロイメント戦略の採用</li>
+<li>インフラストラクチャのコード化（IaC）</li>
+<li>定期的な設定レビューの実施</li>
+<li>問題と解決策の文書化とチーム内共有</li>
+</ol>
+<h2 id="関連キーワード">関連キーワード</h2>
+<ul>
+<li>ELB (Elastic Load Balancer)</li>
+<li>ECS (Elastic Container Service)</li>
+<li>Docker</li>
+<li>uvicorn</li>
+<li>CloudFormation</li>
+<li>ポートマッピング</li>
+<li>セキュリティグループ</li>
+<li>ヘルスチェック</li>
+<li>リスナールール</li>
+<li>ロードバランサー優先度設定</li>
+<li>Continuous Integration/Continuous Deployment (CI/CD)</li>
+<li>Infrastructure as Code (IaC)</li>
+<li>ブルー/グリーンデプロイメント</li>
+</ul>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://yskmasumoto.github.io/" >
+    &copy;  ysk-mypage 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
