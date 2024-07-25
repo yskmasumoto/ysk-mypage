@@ -6,8 +6,22 @@
     <description>Recent content on ysk-mypage</description>
     <generator>Hugo</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 23 Jul 2024 21:22:57 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 25 Jul 2024 12:34:12 +0900</lastBuildDate>
     <atom:link href="https://yskmasumoto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ltkai</title>
+      <link>https://yskmasumoto.github.io/posts/ltkai/</link>
+      <pubDate>Thu, 25 Jul 2024 12:34:12 +0900</pubDate>
+      <guid>https://yskmasumoto.github.io/posts/ltkai/</guid>
+      <description>LT会で発表しました。</description>
+    </item>
+    <item>
+      <title>WASMのアクセス制限</title>
+      <link>https://yskmasumoto.github.io/posts/wasm-memo/</link>
+      <pubDate>Thu, 25 Jul 2024 11:30:18 +0900</pubDate>
+      <guid>https://yskmasumoto.github.io/posts/wasm-memo/</guid>
+      <description>WASMがファイルアクセス、ネットワークアクセス、DOMアクセスなどを直接実行できない理由についての簡単なまとめ&#xA;1. WASMの設計思想 高速で安全な実行環境の提供が目的 限定的な機能セットを持つ仮想マシンとしての実装 2. サンドボックス化 ホスト環境によるサンドボックス内での実行 外部環境からの隔離 直接的なシステムリソースへのアクセス制限 3. セキュリティ考慮 直接アクセスによる潜在的セキュリティリスクの回避 悪意のあるコードからの重要データの保護 不正操作の防止 4. プラットフォーム独立性 様々な環境での動作を目指す設計 特定システムに依存する機能の直接サポート回避 5. ホスト環境への依存 ホスト環境を通じた機能アクセス 必要に応じたアクセス権限の提供 6. Web APIとの統合 ブラウザ環境におけるJavaScriptを介したWeb APIアクセス WASMモジュールからの直接API呼び出し不可 7. WASI 非ブラウザ環境での標準化されたシステムインターフェース ホスト環境による制御 8. 明示的な権限付与 ホスト環境によるWASMモジュールへの明示的権限付与 最小権限原則の適用 9. メモリ分離 WASMモジュール独自のメモリ空間 ホストシステムメモリへの直接アクセス不可 メモリ関連攻撃やデータ漏洩リスクの軽減 10. パフォーマンスの最適化 直接的システムアクセスの制限によるコード実行の最適化 高速処理の実現 所感 ファイルI/Oに依存しないロジックに対して特に有効そう 設計思想やシステム的に、WASMモジュール上でファイルI/Oを行うのは悪手に見える やろうと思えばJavascript Bridgeなどを使えば可能 RustやGo, Cで試してみたい </description>
+    </item>
     <item>
       <title>ELB/ECS構成のAPIトラブルシューティング要約</title>
       <link>https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/</link>
