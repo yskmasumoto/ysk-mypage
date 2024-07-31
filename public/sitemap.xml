@@ -2,20 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/</loc>
+    <loc>http://localhost:1313/posts/go-proxy/</loc>
+    <lastmod>2024-07-31T20:55:14+09:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2024-07-31T20:55:14+09:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2024-07-31T20:55:14+09:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/ecs503error-troubleshooting/</loc>
     <lastmod>2024-07-23T21:22:57+09:00</lastmod>
   </url><url>
-    <loc>https://yskmasumoto.github.io/posts/</loc>
-    <lastmod>2024-07-23T21:22:57+09:00</lastmod>
-  </url><url>
-    <loc>https://yskmasumoto.github.io/</loc>
-    <lastmod>2024-07-23T21:22:57+09:00</lastmod>
-  </url><url>
-    <loc>https://yskmasumoto.github.io/posts/aws-powertools-logger-tips/</loc>
+    <loc>http://localhost:1313/posts/aws-powertools-logger-tips/</loc>
     <lastmod>2024-07-22T21:29:04+09:00</lastmod>
   </url><url>
-    <loc>https://yskmasumoto.github.io/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url><url>
-    <loc>https://yskmasumoto.github.io/tags/</loc>
+    <loc>http://localhost:1313/tags/</loc>
   </url>
 </urlset>

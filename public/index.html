@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja-jp">
-  <head>
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
@@ -36,18 +36,18 @@
     
 
     
-      <link rel="canonical" href="https://yskmasumoto.github.io/">
+      <link rel="canonical" href="http://localhost:1313/">
     
 
-    <meta property="og:url" content="https://yskmasumoto.github.io/">
+    <meta property="og:url" content="http://localhost:1313/">
   <meta property="og:site_name" content="ysk-mypage">
   <meta property="og:title" content="ysk-mypage">
   <meta property="og:locale" content="ja_jp">
   <meta property="og:type" content="website">
 
   <meta itemprop="name" content="ysk-mypage">
-  <meta itemprop="datePublished" content="2024-07-23T21:22:57+09:00">
-  <meta itemprop="dateModified" content="2024-07-23T21:22:57+09:00">
+  <meta itemprop="datePublished" content="2024-07-31T20:55:14+09:00">
+  <meta itemprop="dateModified" content="2024-07-31T20:55:14+09:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="ysk-mypage">
 
@@ -127,6 +127,43 @@
       
       <div class="blah w-100">
         <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/posts/go-proxy/" class="color-inherit dim link">
+            GOPROXYとGo環境変数に関する会話の詳細サマリー
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          この文書は、GOPROXYの役割、その存在背景、およびGo環境変数に関する一連の質問と回答をまとめたものです。
+GOPROXYの役割 会話は、GOPROXYの役割についての質問から始まりました。回答では、GOPROXYの機能を以下のセクションに分けて説明しました：
+1. 基本概念 GOPROXYは、Goのモジュールプロキシサーバーを指定するための環境変数です。これは、Goのツールチェーンがモジュールをダウンロードする際に使用するプロキシサーバーを設定します。
+2. 主な役割 GOPROXYの主な役割として、以下の3点が挙げられました：
+a) モジュールの取得: 指定されたプロキシサーバーを通じてモジュールをダウンロードします。 b) キャッシング: 頻繁に使用されるモジュールをキャッシュし、ダウンロード時間を短縮します。 c) 可用性の向上: プライマリソースが利用できない場合の代替ソースを提供します。
+3. セキュリティとプライバシー セキュリティ面での重要性として、以下の2点が強調されました：
+a) プライベートモジュールの保護: 社内のプライベートモジュールへのアクセスを制御できます。 b) ネットワークセキュリティ: 直接インターネットアクセスを制限し、承認されたプロキシ経由でのみモジュールを取得できます。
+4. パフォーマンスの最適化 GOPROXYによるパフォーマンス向上について、以下の2点が説明されました：
+a) ダウンロード速度の向上: 地理的に近いプロキシサーバーを使用することで、ダウンロード時間を短縮します。 b) 帯域幅の節約: キャッシングにより、重複したダウンロードを減らします。
+5. 設定と使用方法 GOPROXYの設定方法として、以下の3点が紹介されました：
+a) 環境変数の設定: export GOPROXY=https://proxy.example.com,direct b) 複数のプロキシの指定: カンマ区切りで複数のプロキシを指定できます。 c) 直接接続のフォールバック: directキーワードを使用して、プロキシが失敗した場合に直接接続を試みることができます。
+GOPROXYが存在する背景 次に、GOPROXYが存在する背景についての質問がありました。回答では、以下の点が詳しく説明されました：
+1. Goモジュールシステムの導入 Go 1.11（2018年8月リリース）でモジュールシステムが実験的に導入されました。 Go 1.13（2019年9月リリース）でモジュールシステムがデフォルトで有効になりました。 このモジュールシステムは、依存関係の管理を改善し、再現可能なビルドを実現することを目的としていました。
+2. 中央集権型リポジトリの不在 多くのプログラミング言語（例：Java の Maven Central、JavaScript の npm）は中央集権型のパッケージリポジトリを持っています。 しかし、Goはそのような中央リポジトリを持たず、代わりにバージョン管理システム（主にGit）上のソースコードを直接参照する方式を採用しました。 3. 分散型アプローチの課題 Goの分散型アプローチには以下のような課題がありました：
+        </div>
+          <a href="/posts/go-proxy/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+            </div>
+          
+            <div class="relative w-100 mb4">
+              
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+    <div class="flex flex-column flex-row-ns">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
           <a href="/posts/ecs503error-troubleshooting/" class="color-inherit dim link">
             ELB/ECS構成のAPIトラブルシューティング要約
             </a>
@@ -179,7 +216,7 @@
     </main>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://yskmasumoto.github.io/" >
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://localhost:1313/" >
     &copy;  ysk-mypage 2024 
   </a>
     <div>

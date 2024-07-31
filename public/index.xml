@@ -2,24 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ysk-mypage</title>
-    <link>https://yskmasumoto.github.io/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on ysk-mypage</description>
     <generator>Hugo</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 23 Jul 2024 21:22:57 +0900</lastBuildDate>
-    <atom:link href="https://yskmasumoto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 31 Jul 2024 20:55:14 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GOPROXYとGo環境変数に関する会話の詳細サマリー</title>
+      <link>http://localhost:1313/posts/go-proxy/</link>
+      <pubDate>Wed, 31 Jul 2024 20:55:14 +0900</pubDate>
+      <guid>http://localhost:1313/posts/go-proxy/</guid>
+      <description>この文書は、GOPROXYの役割、その存在背景、およびGo環境変数に関する一連の質問と回答をまとめたものです。&#xA;GOPROXYの役割 会話は、GOPROXYの役割についての質問から始まりました。回答では、GOPROXYの機能を以下のセクションに分けて説明しました：&#xA;1. 基本概念 GOPROXYは、Goのモジュールプロキシサーバーを指定するための環境変数です。これは、Goのツールチェーンがモジュールをダウンロードする際に使用するプロキシサーバーを設定します。&#xA;2. 主な役割 GOPROXYの主な役割として、以下の3点が挙げられました：&#xA;a) モジュールの取得: 指定されたプロキシサーバーを通じてモジュールをダウンロードします。 b) キャッシング: 頻繁に使用されるモジュールをキャッシュし、ダウンロード時間を短縮します。 c) 可用性の向上: プライマリソースが利用できない場合の代替ソースを提供します。&#xA;3. セキュリティとプライバシー セキュリティ面での重要性として、以下の2点が強調されました：&#xA;a) プライベートモジュールの保護: 社内のプライベートモジュールへのアクセスを制御できます。 b) ネットワークセキュリティ: 直接インターネットアクセスを制限し、承認されたプロキシ経由でのみモジュールを取得できます。&#xA;4. パフォーマンスの最適化 GOPROXYによるパフォーマンス向上について、以下の2点が説明されました：&#xA;a) ダウンロード速度の向上: 地理的に近いプロキシサーバーを使用することで、ダウンロード時間を短縮します。 b) 帯域幅の節約: キャッシングにより、重複したダウンロードを減らします。&#xA;5. 設定と使用方法 GOPROXYの設定方法として、以下の3点が紹介されました：&#xA;a) 環境変数の設定: export GOPROXY=https://proxy.example.com,direct b) 複数のプロキシの指定: カンマ区切りで複数のプロキシを指定できます。 c) 直接接続のフォールバック: directキーワードを使用して、プロキシが失敗した場合に直接接続を試みることができます。&#xA;GOPROXYが存在する背景 次に、GOPROXYが存在する背景についての質問がありました。回答では、以下の点が詳しく説明されました：&#xA;1. Goモジュールシステムの導入 Go 1.11（2018年8月リリース）でモジュールシステムが実験的に導入されました。 Go 1.13（2019年9月リリース）でモジュールシステムがデフォルトで有効になりました。 このモジュールシステムは、依存関係の管理を改善し、再現可能なビルドを実現することを目的としていました。&#xA;2. 中央集権型リポジトリの不在 多くのプログラミング言語（例：Java の Maven Central、JavaScript の npm）は中央集権型のパッケージリポジトリを持っています。 しかし、Goはそのような中央リポジトリを持たず、代わりにバージョン管理システム（主にGit）上のソースコードを直接参照する方式を採用しました。 3. 分散型アプローチの課題 Goの分散型アプローチには以下のような課題がありました：</description>
+    </item>
     <item>
       <title>ELB/ECS構成のAPIトラブルシューティング要約</title>
-      <link>https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/</link>
+      <link>http://localhost:1313/posts/ecs503error-troubleshooting/</link>
       <pubDate>Tue, 23 Jul 2024 21:22:57 +0900</pubDate>
-      <guid>https://yskmasumoto.github.io/posts/ecs503error-troubleshooting/</guid>
+      <guid>http://localhost:1313/posts/ecs503error-troubleshooting/</guid>
       <description>筆者がAIにした質問内容 curlでELB, ECS構成のAPIを呼び出すと503エラーが返ってくる問題の解決方法 ELBのポート番号の確認方法 DockerfileのCMD部分とELBの設定の不一致に関する質問 ECSのタスク定義のCloudFormationに関する質問 uvicornのポート変更後もcurlで503エラーが発生する問題の解決方法 解決プロセス ECSタスクの状態確認（稼働状況、エラーログ、ヘルスチェック設定） Dockerfileの確認と改善提案 ELBの設定確認（ポート番号、リスナー設定） ECSタスク定義の確認とDockerfileとの整合性チェック ポートマッピングの修正（8000から80へ） セキュリティグループ、ネットワーク設定の確認 アプリケーションログとELBアクセスログの確認 ロードバランサーのリスナールール優先度の確認 原因 DockerfileとECSタスク定義のポート設定の不一致（8000 vs 80） ロードバランサーのリスナールール優先度設定ミス（v1とv2のルーティング） 再発防止策 Dockerfileとタスク定義の一貫性確保 デプロイ前の設定チェックリストの作成と使用 自動テストの導入（ルーティングチェック等） ブルー/グリーンデプロイメント戦略の採用 インフラストラクチャのコード化（IaC） 定期的な設定レビューの実施 問題と解決策の文書化とチーム内共有 関連キーワード ELB (Elastic Load Balancer) ECS (Elastic Container Service) Docker uvicorn CloudFormation ポートマッピング セキュリティグループ ヘルスチェック リスナールール ロードバランサー優先度設定 Continuous Integration/Continuous Deployment (CI/CD) Infrastructure as Code (IaC) ブルー/グリーンデプロイメント </description>
     </item>
     <item>
       <title>AWS Lambda Powertools Logger TypeErrorの解決</title>
-      <link>https://yskmasumoto.github.io/posts/aws-powertools-logger-tips/</link>
+      <link>http://localhost:1313/posts/aws-powertools-logger-tips/</link>
       <pubDate>Mon, 22 Jul 2024 21:29:04 +0900</pubDate>
-      <guid>https://yskmasumoto.github.io/posts/aws-powertools-logger-tips/</guid>
+      <guid>http://localhost:1313/posts/aws-powertools-logger-tips/</guid>
       <description>AWS Lambda Powertools Logger TypeErrorの解決 エラー内容 TypeError: aws_lambda_powertools.logging.logger.Logger._init_logger() got multiple values for keyword argument &amp;#39;log_level&amp;#39; エラーの原因 このエラーは通常、Loggerクラスのインスタンス化時にlog_levelパラメータが重複して指定されている場合に発生します。以下の状況で起こる可能性があります：&#xA;コード内で複数回Loggerインスタンスを作成し、それぞれでlog_levelを指定している。 環境変数LOG_LEVELが設定されている状態で、コード内でもlog_levelを指定している。 デコレータ@logger.inject_lambda_contextでlog_levelを指定し、同時にLoggerインスタンス作成時にも指定している。 解決方法 1. Loggerインスタンスの一元管理 アプリケーション全体で単一のLoggerインスタンスを使用します。 可能な限り、Loggerインスタンスを作成する場所を1箇所に限定します。 from aws_lambda_powertools import Logger logger = Logger() # 他のモジュールやクラスでこのloggerを再利用 2. 環境変数の活用 LOG_LEVEL環境変数を使用してログレベルを制御します。 コード内でlog_levelを指定する代わりに、環境変数に依存します。 # 環境変数 LOG_LEVEL を設定し、コードでは指定しない logger = Logger() 3. デコレータの適切な使用 @logger.inject_lambda_contextデコレータを使用する場合、デコレータ内でlog_levelを指定せず、Loggerインスタンス化時にのみ指定します。 logger = Logger(log_level=&amp;#34;INFO&amp;#34;) @logger.inject_lambda_context(log_event=True) def handler(event, context): logger.info(&amp;#34;This is an info message&amp;#34;) 4. 依存性注入パターンの採用 Loggerインスタンスを外部から注入できるようにクラスを設計します。 class SQS: def __init__(self, queue_url: str, logger: Logger = None): self.</description>
     </item>
   </channel>
