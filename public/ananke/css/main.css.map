@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "main.css",
-	"sourceRoot": "/home/masumo/works/web/ysk-mypage",
+	"sourceRoot": "/home/masumo/works/site/ysk-mypage",
 	"sources": [
 		"ananke/css/main.css"
 	],

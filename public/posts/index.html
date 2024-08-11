@@ -46,8 +46,8 @@
   <meta property="og:type" content="website">
 
   <meta itemprop="name" content="Posts">
-  <meta itemprop="datePublished" content="2024-07-23T21:22:57+09:00">
-  <meta itemprop="dateModified" content="2024-07-23T21:22:57+09:00">
+  <meta itemprop="datePublished" content="2024-08-11T13:38:47+09:00">
+  <meta itemprop="dateModified" content="2024-08-11T13:38:47+09:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Posts">
 
@@ -95,6 +95,124 @@
   <article class="pa3 pa4-ns nested-copy-line-height">
     <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
     <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/posts/docker-api-signal-handling-summary/" class="link black dim">
+        Docker環境でのAPI開発におけるシグナル処理と終了プロセス
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      概要 AWS ECSなどのコンテナ環境でAPIを開発する際、適切なシグナル処理と正常な終了プロセスの実装は重要です。特に、SIGTERMシグナルの処理は、アプリケーションのグレースフルシャットダウンに不可欠です。
+問題点 初期の実装では、以下の問題が発生していました：
+entrypoint.shスクリプト内のtrapコマンドが、子プロセス（uvicorn）に適用されていなかった。 uvicornプロセスがSIGTERMを受信した際に、エラーログを出力していた。 コンテナが異常終了として解釈される可能性があった。 スクリプトの比較 修正前のentrypoint.shスクリプト #!/bin/bash trap &#34;exit 0&#34; SIGTERM uvicorn --config gunicorn_conf.py main:app 修正後のentrypoint.shスクリプト #!/bin/bash handle_sigterm() { echo &#34;Received SIGTERM. Shutting down gracefully...&#34; kill -TERM &#34;$child&#34; 2&gt;/dev/null } trap handle_sigterm SIGTERM uvicorn --config gunicorn_conf.py main:app &amp; child=$! wait &#34;$child&#34; exit_code=$? echo &#34;uvicorn process exited with code $exit_code&#34; exit 0 主な改善点 カスタムシグナルハンドラの実装
+修正前: 単純なtrap &quot;exit 0&quot; SIGTERM 修正後: handle_sigterm関数を定義し、SIGTERM受信時の動作をカスタマイズ 子プロセス（uvicorn）にSIGTERMを伝播するよう改善 バックグラウンドでのuvicorn起動
+修正前: フォアグラウンドで直接実行 修正後: &amp;を使用してバックグラウンドで起動し、プロセスIDを$child変数に保存 子プロセスの終了待機
+    </div>
+    <a href="/posts/docker-api-signal-handling-summary/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/posts/go-proxy/" class="link black dim">
+        GOPROXYとGo環境変数に関する会話の詳細サマリー
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      この文書は、GOPROXYの役割、その存在背景、およびGo環境変数に関する一連の質問と回答をまとめたものです。
+GOPROXYの役割 会話は、GOPROXYの役割についての質問から始まりました。回答では、GOPROXYの機能を以下のセクションに分けて説明しました：
+1. 基本概念 GOPROXYは、Goのモジュールプロキシサーバーを指定するための環境変数です。これは、Goのツールチェーンがモジュールをダウンロードする際に使用するプロキシサーバーを設定します。
+2. 主な役割 GOPROXYの主な役割として、以下の3点が挙げられました：
+a) モジュールの取得: 指定されたプロキシサーバーを通じてモジュールをダウンロードします。 b) キャッシング: 頻繁に使用されるモジュールをキャッシュし、ダウンロード時間を短縮します。 c) 可用性の向上: プライマリソースが利用できない場合の代替ソースを提供します。
+3. セキュリティとプライバシー セキュリティ面での重要性として、以下の2点が強調されました：
+a) プライベートモジュールの保護: 社内のプライベートモジュールへのアクセスを制御できます。 b) ネットワークセキュリティ: 直接インターネットアクセスを制限し、承認されたプロキシ経由でのみモジュールを取得できます。
+4. パフォーマンスの最適化 GOPROXYによるパフォーマンス向上について、以下の2点が説明されました：
+a) ダウンロード速度の向上: 地理的に近いプロキシサーバーを使用することで、ダウンロード時間を短縮します。 b) 帯域幅の節約: キャッシングにより、重複したダウンロードを減らします。
+5. 設定と使用方法 GOPROXYの設定方法として、以下の3点が紹介されました：
+a) 環境変数の設定: export GOPROXY=https://proxy.example.com,direct b) 複数のプロキシの指定: カンマ区切りで複数のプロキシを指定できます。 c) 直接接続のフォールバック: directキーワードを使用して、プロキシが失敗した場合に直接接続を試みることができます。
+GOPROXYが存在する背景 次に、GOPROXYが存在する背景についての質問がありました。回答では、以下の点が詳しく説明されました：
+1. Goモジュールシステムの導入 Go 1.11（2018年8月リリース）でモジュールシステムが実験的に導入されました。 Go 1.13（2019年9月リリース）でモジュールシステムがデフォルトで有効になりました。 このモジュールシステムは、依存関係の管理を改善し、再現可能なビルドを実現することを目的としていました。
+2. 中央集権型リポジトリの不在 多くのプログラミング言語（例：Java の Maven Central、JavaScript の npm）は中央集権型のパッケージリポジトリを持っています。 しかし、Goはそのような中央リポジトリを持たず、代わりにバージョン管理システム（主にGit）上のソースコードを直接参照する方式を採用しました。 3. 分散型アプローチの課題 Goの分散型アプローチには以下のような課題がありました：
+    </div>
+    <a href="/posts/go-proxy/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/posts/gamma-distribution-link-function/" class="link black dim">
+        Gamma分布のCanonical Link Function導出過程
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      1. Gamma分布の確率密度関数 gamma分布の確率密度関数は以下のように表されます：
+$$ f(y; \beta, \alpha) = \frac{1}{\Gamma(\alpha) \cdot \beta^\alpha} \cdot y^{\alpha-1} \cdot e^{-y/\beta} $$
+ここで、$\beta$は尺度パラメータ、$\alpha$は形状パラメータです。
+2. パラメータの置き換え 一般化線形モデル（GLM）の文脈では、通常$\beta$を$\mu/\alpha$と置き換えます。$\mu$は平均を表します。 この置き換えにより、確率密度関数は以下のようになります：
+$$ f(y; \mu, \alpha) = \frac{1}{\Gamma(\alpha) \cdot (\mu/\alpha)^\alpha} \cdot y^{\alpha-1} \cdot e^{-\alpha y/\mu} $$
+3. 指数型分布族への変換 次に、この分布が指数型分布族の形式に従うことを示します。 指数型分布族の一般形は以下のとおりです：
+$$ f(y; \theta) = \exp\left(\frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi)\right) $$
+この式を対数変換すると以下のようになります：
+$$ \log(f(y; \theta)) = \frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi) $$
+gamma分布の確率密度関数を対数変換します：
+$$ \log(f(y; \mu, \alpha)) = -\log(\Gamma(\alpha)) - \alpha\log(\mu/\alpha) + (\alpha-1)\log(y) - \alpha y/\mu $$
+    </div>
+    <a href="/posts/gamma-distribution-link-function/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/posts/ltkai/" class="link black dim">
+        Ltkai
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      LT会で発表しました。
+    </div>
+    <a href="/posts/ltkai/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="/posts/wasm-memo/" class="link black dim">
+        WASMのアクセス制限
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      WASMがファイルアクセス、ネットワークアクセス、DOMアクセスなどを直接実行できない理由についての簡単なまとめ
+1. WASMの設計思想 高速で安全な実行環境の提供が目的 限定的な機能セットを持つ仮想マシンとしての実装 2. サンドボックス化 ホスト環境によるサンドボックス内での実行 外部環境からの隔離 直接的なシステムリソースへのアクセス制限 3. セキュリティ考慮 直接アクセスによる潜在的セキュリティリスクの回避 悪意のあるコードからの重要データの保護 不正操作の防止 4. プラットフォーム独立性 様々な環境での動作を目指す設計 特定システムに依存する機能の直接サポート回避 5. ホスト環境への依存 ホスト環境を通じた機能アクセス 必要に応じたアクセス権限の提供 6. Web APIとの統合 ブラウザ環境におけるJavaScriptを介したWeb APIアクセス WASMモジュールからの直接API呼び出し不可 7. WASI 非ブラウザ環境での標準化されたシステムインターフェース ホスト環境による制御 8. 明示的な権限付与 ホスト環境によるWASMモジュールへの明示的権限付与 最小権限原則の適用 9. メモリ分離 WASMモジュール独自のメモリ空間 ホストシステムメモリへの直接アクセス不可 メモリ関連攻撃やデータ漏洩リスクの軽減 10. パフォーマンスの最適化 直接的システムアクセスの制限によるコード実行の最適化 高速処理の実現 所感 ファイルI/Oに依存しないロジックに対して特に有効そう 設計思想やシステム的に、WASMモジュール上でファイルI/Oを行うのは悪手に見える やろうと思えばJavascript Bridgeなどを使えば可能 RustやGo, Cで試してみたい 
+    </div>
+    <a href="/posts/wasm-memo/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+</div>
+
+        </div>
       
         <div class="relative w-100 w-30-l mb4 bg-white">
           <div class="relative w-100 mb4 bg-white nested-copy-line-height">

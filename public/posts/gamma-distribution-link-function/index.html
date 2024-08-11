@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Gamma分布のCanonical Link Function導出過程 | ysk-mypage</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="1. Gamma分布の確率密度関数 gamma分布の確率密度関数は以下のように表されます：
+$$ f(y; \beta, \alpha) = \frac{1}{\Gamma(\alpha) \cdot \beta^\alpha} \cdot y^{\alpha-1} \cdot e^{-y/\beta} $$
+ここで、$\beta$は尺度パラメータ、$\alpha$は形状パラメータです。
+2. パラメータの置き換え 一般化線形モデル（GLM）の文脈では、通常$\beta$を$\mu/\alpha$と置き換えます。$\mu$は平均を表します。 この置き換えにより、確率密度関数は以下のようになります：
+$$ f(y; \mu, \alpha) = \frac{1}{\Gamma(\alpha) \cdot (\mu/\alpha)^\alpha} \cdot y^{\alpha-1} \cdot e^{-\alpha y/\mu} $$
+3. 指数型分布族への変換 次に、この分布が指数型分布族の形式に従うことを示します。 指数型分布族の一般形は以下のとおりです：
+$$ f(y; \theta) = \exp\left(\frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi)\right) $$
+この式を対数変換すると以下のようになります：
+$$ \log(f(y; \theta)) = \frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi) $$
+gamma分布の確率密度関数を対数変換します：
+$$ \log(f(y; \mu, \alpha)) = -\log(\Gamma(\alpha)) - \alpha\log(\mu/\alpha) &#43; (\alpha-1)\log(y) - \alpha y/\mu $$">
+    <meta name="generator" content="Hugo 0.129.0">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://yskmasumoto.github.io/posts/gamma-distribution-link-function/">
+    
+
+    <meta property="og:url" content="https://yskmasumoto.github.io/posts/gamma-distribution-link-function/">
+  <meta property="og:site_name" content="ysk-mypage">
+  <meta property="og:title" content="Gamma分布のCanonical Link Function導出過程">
+  <meta property="og:description" content="1. Gamma分布の確率密度関数 gamma分布の確率密度関数は以下のように表されます：
+$$ f(y; \beta, \alpha) = \frac{1}{\Gamma(\alpha) \cdot \beta^\alpha} \cdot y^{\alpha-1} \cdot e^{-y/\beta} $$
+ここで、$\beta$は尺度パラメータ、$\alpha$は形状パラメータです。
+2. パラメータの置き換え 一般化線形モデル（GLM）の文脈では、通常$\beta$を$\mu/\alpha$と置き換えます。$\mu$は平均を表します。 この置き換えにより、確率密度関数は以下のようになります：
+$$ f(y; \mu, \alpha) = \frac{1}{\Gamma(\alpha) \cdot (\mu/\alpha)^\alpha} \cdot y^{\alpha-1} \cdot e^{-\alpha y/\mu} $$
+3. 指数型分布族への変換 次に、この分布が指数型分布族の形式に従うことを示します。 指数型分布族の一般形は以下のとおりです：
+$$ f(y; \theta) = \exp\left(\frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi)\right) $$
+この式を対数変換すると以下のようになります：
+$$ \log(f(y; \theta)) = \frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi) $$
+gamma分布の確率密度関数を対数変換します：
+$$ \log(f(y; \mu, \alpha)) = -\log(\Gamma(\alpha)) - \alpha\log(\mu/\alpha) &#43; (\alpha-1)\log(y) - \alpha y/\mu $$">
+  <meta property="og:locale" content="ja_jp">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-29T10:26:02+09:00">
+    <meta property="article:modified_time" content="2024-07-29T10:26:02+09:00">
+
+  <meta itemprop="name" content="Gamma分布のCanonical Link Function導出過程">
+  <meta itemprop="description" content="1. Gamma分布の確率密度関数 gamma分布の確率密度関数は以下のように表されます：
+$$ f(y; \beta, \alpha) = \frac{1}{\Gamma(\alpha) \cdot \beta^\alpha} \cdot y^{\alpha-1} \cdot e^{-y/\beta} $$
+ここで、$\beta$は尺度パラメータ、$\alpha$は形状パラメータです。
+2. パラメータの置き換え 一般化線形モデル（GLM）の文脈では、通常$\beta$を$\mu/\alpha$と置き換えます。$\mu$は平均を表します。 この置き換えにより、確率密度関数は以下のようになります：
+$$ f(y; \mu, \alpha) = \frac{1}{\Gamma(\alpha) \cdot (\mu/\alpha)^\alpha} \cdot y^{\alpha-1} \cdot e^{-\alpha y/\mu} $$
+3. 指数型分布族への変換 次に、この分布が指数型分布族の形式に従うことを示します。 指数型分布族の一般形は以下のとおりです：
+$$ f(y; \theta) = \exp\left(\frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi)\right) $$
+この式を対数変換すると以下のようになります：
+$$ \log(f(y; \theta)) = \frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi) $$
+gamma分布の確率密度関数を対数変換します：
+$$ \log(f(y; \mu, \alpha)) = -\log(\Gamma(\alpha)) - \alpha\log(\mu/\alpha) &#43; (\alpha-1)\log(y) - \alpha y/\mu $$">
+  <meta itemprop="datePublished" content="2024-07-29T10:26:02+09:00">
+  <meta itemprop="dateModified" content="2024-07-29T10:26:02+09:00">
+  <meta itemprop="wordCount" content="215">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Gamma分布のCanonical Link Function導出過程">
+  <meta name="twitter:description" content="1. Gamma分布の確率密度関数 gamma分布の確率密度関数は以下のように表されます：
+$$ f(y; \beta, \alpha) = \frac{1}{\Gamma(\alpha) \cdot \beta^\alpha} \cdot y^{\alpha-1} \cdot e^{-y/\beta} $$
+ここで、$\beta$は尺度パラメータ、$\alpha$は形状パラメータです。
+2. パラメータの置き換え 一般化線形モデル（GLM）の文脈では、通常$\beta$を$\mu/\alpha$と置き換えます。$\mu$は平均を表します。 この置き換えにより、確率密度関数は以下のようになります：
+$$ f(y; \mu, \alpha) = \frac{1}{\Gamma(\alpha) \cdot (\mu/\alpha)^\alpha} \cdot y^{\alpha-1} \cdot e^{-\alpha y/\mu} $$
+3. 指数型分布族への変換 次に、この分布が指数型分布族の形式に従うことを示します。 指数型分布族の一般形は以下のとおりです：
+$$ f(y; \theta) = \exp\left(\frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi)\right) $$
+この式を対数変換すると以下のようになります：
+$$ \log(f(y; \theta)) = \frac{y\theta - b(\theta)}{a(\phi)} &#43; c(y, \phi) $$
+gamma分布の確率密度関数を対数変換します：
+$$ \log(f(y; \mu, \alpha)) = -\log(\Gamma(\alpha)) - \alpha\log(\mu/\alpha) &#43; (\alpha-1)\log(y) - \alpha y/\mu $$">
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        ysk-mypage
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Gamma分布のCanonical Link Function導出過程</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2024-07-29T10:26:02+09:00">July 29, 2024</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="1-gamma分布の確率密度関数">1. Gamma分布の確率密度関数</h2>
+<p>gamma分布の確率密度関数は以下のように表されます：</p>
+<p>$$
+f(y; \beta, \alpha) = \frac{1}{\Gamma(\alpha) \cdot \beta^\alpha} \cdot y^{\alpha-1} \cdot e^{-y/\beta}
+$$</p>
+<p>ここで、$\beta$は尺度パラメータ、$\alpha$は形状パラメータです。</p>
+<h2 id="2-パラメータの置き換え">2. パラメータの置き換え</h2>
+<p>一般化線形モデル（GLM）の文脈では、通常$\beta$を$\mu/\alpha$と置き換えます。$\mu$は平均を表します。
+この置き換えにより、確率密度関数は以下のようになります：</p>
+<p>$$
+f(y; \mu, \alpha) = \frac{1}{\Gamma(\alpha) \cdot (\mu/\alpha)^\alpha} \cdot y^{\alpha-1} \cdot e^{-\alpha y/\mu}
+$$</p>
+<h2 id="3-指数型分布族への変換">3. 指数型分布族への変換</h2>
+<p>次に、この分布が指数型分布族の形式に従うことを示します。
+指数型分布族の一般形は以下のとおりです：</p>
+<p>$$
+f(y; \theta) = \exp\left(\frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi)\right)
+$$</p>
+<p>この式を対数変換すると以下のようになります：</p>
+<p>$$
+\log(f(y; \theta)) = \frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi)
+$$</p>
+<p>gamma分布の確率密度関数を対数変換します：</p>
+<p>$$
+\log(f(y; \mu, \alpha)) = -\log(\Gamma(\alpha)) - \alpha\log(\mu/\alpha) + (\alpha-1)\log(y) - \alpha y/\mu
+$$</p>
+<p>これを整理して指数型分布族の形に合わせます：</p>
+<p>$$
+\begin{aligned}
+-\alpha\log(\mu/\alpha) &amp;= -\alpha(\log(\mu) - \log(\alpha)) = -\alpha\log(\mu) + \alpha\log(\alpha)\
+\log(f(y; \mu, \alpha)) &amp;= -\log(\Gamma(\alpha)) + (-\alpha\log(\mu) + \alpha\log(\alpha)) + (\alpha-1)\log(y) - \alpha y/\mu\
+&amp;= -\alpha y/\mu + (\alpha-1)\log(y) - \alpha\log(\mu) + \alpha\log(\alpha) - \log(\Gamma(\alpha))\
+&amp;= \left(-\frac{\alpha}{\mu}\right)y + (\alpha-1)\log(y) - \alpha\log(\mu) + \alpha\log(\alpha) - \log(\Gamma(\alpha))
+\end{aligned}
+$$</p>
+<h2 id="4-beta-bbeta-aphi-cy-phiの定義">4. $\beta$, $b(\beta)$, $a(\phi)$, $c(y, \phi)$の定義</h2>
+<p>ここで、$\beta$を以下のようにおきます。</p>
+<p>$$
+\beta = -\frac{\alpha}{\mu}
+$$</p>
+<p>この$\beta$を用いて、$b(\beta)$, $a(\phi)$, $c(y, \phi)$はそれぞれ以下のように表すことができます。
+$$
+\begin{aligned}
+b(\beta) &amp;= -\alpha\log(-\beta)\
+a(\phi) &amp;= \frac{1}{\alpha}\
+c(y, \phi) &amp;= (\alpha-1)\log(y) + \alpha\log(\alpha) - \log(\Gamma(\alpha))
+\end{aligned}
+$$</p>
+<p>これで、gamma分布が指数型分布族の形式に従うことが示されました。</p>
+<h2 id="5-canonical-link-functionの定義">5. Canonical Link Functionの定義</h2>
+<p>canonical link functionは、以下のようなの形で表されます。
+$$
+\beta = g(\mu)
+$$</p>
+<p>ここで$g()$がlink functionです。よって、$\beta$の定義より、
+$$
+\begin{aligned}
+\beta &amp;= g(\mu) = -\frac{\alpha}{\mu}\
+\mu &amp;= -\frac{\alpha}{\beta}
+\end{aligned}
+$$</p>
+<p>したがって、$g(\mu) = -\frac{\alpha}{\mu}$がcanonical link functionとなります。
+通常、$k$は既知のパラメータとして扱われるので、$-\frac{1}{\mu}$を canonical link function として使用します。</p>
+<p>そして、この関数の逆関数が、実際にGLMで使用されるlink functionとなります。
+逆関数は $g^{-1}(\beta) = -\frac{1}{\beta}$ となり、これは「逆数リンク関数」（reciprocal link function）と呼ばれます。</p>
+<h2 id="6-まとめ">6. まとめ</h2>
+<p>gamma分布のcanonical link functionは$-\frac{1}{\mu}$で、その逆関数である$-\frac{1}{\beta}$がGLMで使用されます。
+この link function を使用することで、線形予測子と平均パラメータ$\mu$の関係が適切にモデル化されます。</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://yskmasumoto.github.io/" >
+    &copy;  ysk-mypage 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

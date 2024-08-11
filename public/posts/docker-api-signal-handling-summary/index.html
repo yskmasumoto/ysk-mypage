@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Docker環境でのAPI開発におけるシグナル処理と終了プロセス | ysk-mypage</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="概要 AWS ECSなどのコンテナ環境でAPIを開発する際、適切なシグナル処理と正常な終了プロセスの実装は重要です。特に、SIGTERMシグナルの処理は、アプリケーションのグレースフルシャットダウンに不可欠です。
+問題点 初期の実装では、以下の問題が発生していました：
+entrypoint.shスクリプト内のtrapコマンドが、子プロセス（uvicorn）に適用されていなかった。 uvicornプロセスがSIGTERMを受信した際に、エラーログを出力していた。 コンテナが異常終了として解釈される可能性があった。 スクリプトの比較 修正前のentrypoint.shスクリプト #!/bin/bash trap &#34;exit 0&#34; SIGTERM uvicorn --config gunicorn_conf.py main:app 修正後のentrypoint.shスクリプト #!/bin/bash handle_sigterm() { echo &#34;Received SIGTERM. Shutting down gracefully...&#34; kill -TERM &#34;$child&#34; 2&gt;/dev/null } trap handle_sigterm SIGTERM uvicorn --config gunicorn_conf.py main:app &amp; child=$! wait &#34;$child&#34; exit_code=$? echo &#34;uvicorn process exited with code $exit_code&#34; exit 0 主な改善点 カスタムシグナルハンドラの実装
+修正前: 単純なtrap &quot;exit 0&quot; SIGTERM 修正後: handle_sigterm関数を定義し、SIGTERM受信時の動作をカスタマイズ 子プロセス（uvicorn）にSIGTERMを伝播するよう改善 バックグラウンドでのuvicorn起動
+修正前: フォアグラウンドで直接実行 修正後: &amp;を使用してバックグラウンドで起動し、プロセスIDを$child変数に保存 子プロセスの終了待機">
+    <meta name="generator" content="Hugo 0.129.0">
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://yskmasumoto.github.io/posts/docker-api-signal-handling-summary/">
+    
+
+    <meta property="og:url" content="https://yskmasumoto.github.io/posts/docker-api-signal-handling-summary/">
+  <meta property="og:site_name" content="ysk-mypage">
+  <meta property="og:title" content="Docker環境でのAPI開発におけるシグナル処理と終了プロセス">
+  <meta property="og:description" content="概要 AWS ECSなどのコンテナ環境でAPIを開発する際、適切なシグナル処理と正常な終了プロセスの実装は重要です。特に、SIGTERMシグナルの処理は、アプリケーションのグレースフルシャットダウンに不可欠です。
+問題点 初期の実装では、以下の問題が発生していました：
+entrypoint.shスクリプト内のtrapコマンドが、子プロセス（uvicorn）に適用されていなかった。 uvicornプロセスがSIGTERMを受信した際に、エラーログを出力していた。 コンテナが異常終了として解釈される可能性があった。 スクリプトの比較 修正前のentrypoint.shスクリプト #!/bin/bash trap &#34;exit 0&#34; SIGTERM uvicorn --config gunicorn_conf.py main:app 修正後のentrypoint.shスクリプト #!/bin/bash handle_sigterm() { echo &#34;Received SIGTERM. Shutting down gracefully...&#34; kill -TERM &#34;$child&#34; 2&gt;/dev/null } trap handle_sigterm SIGTERM uvicorn --config gunicorn_conf.py main:app &amp; child=$! wait &#34;$child&#34; exit_code=$? echo &#34;uvicorn process exited with code $exit_code&#34; exit 0 主な改善点 カスタムシグナルハンドラの実装
+修正前: 単純なtrap &#34;exit 0&#34; SIGTERM 修正後: handle_sigterm関数を定義し、SIGTERM受信時の動作をカスタマイズ 子プロセス（uvicorn）にSIGTERMを伝播するよう改善 バックグラウンドでのuvicorn起動
+修正前: フォアグラウンドで直接実行 修正後: &amp;を使用してバックグラウンドで起動し、プロセスIDを$child変数に保存 子プロセスの終了待機">
+  <meta property="og:locale" content="ja_jp">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-08-11T13:38:47+09:00">
+    <meta property="article:modified_time" content="2024-08-11T13:38:47+09:00">
+
+  <meta itemprop="name" content="Docker環境でのAPI開発におけるシグナル処理と終了プロセス">
+  <meta itemprop="description" content="概要 AWS ECSなどのコンテナ環境でAPIを開発する際、適切なシグナル処理と正常な終了プロセスの実装は重要です。特に、SIGTERMシグナルの処理は、アプリケーションのグレースフルシャットダウンに不可欠です。
+問題点 初期の実装では、以下の問題が発生していました：
+entrypoint.shスクリプト内のtrapコマンドが、子プロセス（uvicorn）に適用されていなかった。 uvicornプロセスがSIGTERMを受信した際に、エラーログを出力していた。 コンテナが異常終了として解釈される可能性があった。 スクリプトの比較 修正前のentrypoint.shスクリプト #!/bin/bash trap &#34;exit 0&#34; SIGTERM uvicorn --config gunicorn_conf.py main:app 修正後のentrypoint.shスクリプト #!/bin/bash handle_sigterm() { echo &#34;Received SIGTERM. Shutting down gracefully...&#34; kill -TERM &#34;$child&#34; 2&gt;/dev/null } trap handle_sigterm SIGTERM uvicorn --config gunicorn_conf.py main:app &amp; child=$! wait &#34;$child&#34; exit_code=$? echo &#34;uvicorn process exited with code $exit_code&#34; exit 0 主な改善点 カスタムシグナルハンドラの実装
+修正前: 単純なtrap &#34;exit 0&#34; SIGTERM 修正後: handle_sigterm関数を定義し、SIGTERM受信時の動作をカスタマイズ 子プロセス（uvicorn）にSIGTERMを伝播するよう改善 バックグラウンドでのuvicorn起動
+修正前: フォアグラウンドで直接実行 修正後: &amp;を使用してバックグラウンドで起動し、プロセスIDを$child変数に保存 子プロセスの終了待機">
+  <meta itemprop="datePublished" content="2024-08-11T13:38:47+09:00">
+  <meta itemprop="dateModified" content="2024-08-11T13:38:47+09:00">
+  <meta itemprop="wordCount" content="93">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Docker環境でのAPI開発におけるシグナル処理と終了プロセス">
+  <meta name="twitter:description" content="概要 AWS ECSなどのコンテナ環境でAPIを開発する際、適切なシグナル処理と正常な終了プロセスの実装は重要です。特に、SIGTERMシグナルの処理は、アプリケーションのグレースフルシャットダウンに不可欠です。
+問題点 初期の実装では、以下の問題が発生していました：
+entrypoint.shスクリプト内のtrapコマンドが、子プロセス（uvicorn）に適用されていなかった。 uvicornプロセスがSIGTERMを受信した際に、エラーログを出力していた。 コンテナが異常終了として解釈される可能性があった。 スクリプトの比較 修正前のentrypoint.shスクリプト #!/bin/bash trap &#34;exit 0&#34; SIGTERM uvicorn --config gunicorn_conf.py main:app 修正後のentrypoint.shスクリプト #!/bin/bash handle_sigterm() { echo &#34;Received SIGTERM. Shutting down gracefully...&#34; kill -TERM &#34;$child&#34; 2&gt;/dev/null } trap handle_sigterm SIGTERM uvicorn --config gunicorn_conf.py main:app &amp; child=$! wait &#34;$child&#34; exit_code=$? echo &#34;uvicorn process exited with code $exit_code&#34; exit 0 主な改善点 カスタムシグナルハンドラの実装
+修正前: 単純なtrap &#34;exit 0&#34; SIGTERM 修正後: handle_sigterm関数を定義し、SIGTERM受信時の動作をカスタマイズ 子プロセス（uvicorn）にSIGTERMを伝播するよう改善 バックグラウンドでのuvicorn起動
+修正前: フォアグラウンドで直接実行 修正後: &amp;を使用してバックグラウンドで起動し、プロセスIDを$child変数に保存 子プロセスの終了待機">
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        ysk-mypage
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Docker環境でのAPI開発におけるシグナル処理と終了プロセス</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2024-08-11T13:38:47+09:00">August 11, 2024</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="概要">概要</h2>
+<p>AWS ECSなどのコンテナ環境でAPIを開発する際、適切なシグナル処理と正常な終了プロセスの実装は重要です。特に、<code>SIGTERM</code>シグナルの処理は、アプリケーションのグレースフルシャットダウンに不可欠です。</p>
+<h2 id="問題点">問題点</h2>
+<p>初期の実装では、以下の問題が発生していました：</p>
+<ol>
+<li><code>entrypoint.sh</code>スクリプト内の<code>trap</code>コマンドが、子プロセス（uvicorn）に適用されていなかった。</li>
+<li>uvicornプロセスが<code>SIGTERM</code>を受信した際に、エラーログを出力していた。</li>
+<li>コンテナが異常終了として解釈される可能性があった。</li>
+</ol>
+<h2 id="スクリプトの比較">スクリプトの比較</h2>
+<h3 id="修正前のentrypointshスクリプト">修正前の<code>entrypoint.sh</code>スクリプト</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>trap <span style="color:#e6db74">&#34;exit 0&#34;</span> SIGTERM
+</span></span><span style="display:flex;"><span>uvicorn --config gunicorn_conf.py main:app
+</span></span></code></pre></div><h3 id="修正後のentrypointshスクリプト">修正後の<code>entrypoint.sh</code>スクリプト</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>handle_sigterm<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Received SIGTERM. Shutting down gracefully...&#34;</span>
+</span></span><span style="display:flex;"><span>    kill -TERM <span style="color:#e6db74">&#34;</span>$child<span style="color:#e6db74">&#34;</span> 2&gt;/dev/null
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>trap handle_sigterm SIGTERM
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>uvicorn --config gunicorn_conf.py main:app &amp;
+</span></span><span style="display:flex;"><span>child<span style="color:#f92672">=</span>$!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>wait <span style="color:#e6db74">&#34;</span>$child<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>exit_code<span style="color:#f92672">=</span>$?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;uvicorn process exited with code </span>$exit_code<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>exit <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><h2 id="主な改善点">主な改善点</h2>
+<ol>
+<li>
+<p>カスタムシグナルハンドラの実装</p>
+<ul>
+<li>修正前: 単純な<code>trap &quot;exit 0&quot; SIGTERM</code></li>
+<li>修正後: <code>handle_sigterm</code>関数を定義し、<code>SIGTERM</code>受信時の動作をカスタマイズ</li>
+<li>子プロセス（uvicorn）に<code>SIGTERM</code>を伝播するよう改善</li>
+</ul>
+</li>
+<li>
+<p>バックグラウンドでのuvicorn起動</p>
+<ul>
+<li>修正前: フォアグラウンドで直接実行</li>
+<li>修正後: <code>&amp;</code>を使用してバックグラウンドで起動し、プロセスIDを<code>$child</code>変数に保存</li>
+</ul>
+</li>
+<li>
+<p>子プロセスの終了待機</p>
+<ul>
+<li>修正前: 待機処理なし</li>
+<li>修正後: <code>wait &quot;$child&quot;</code>コマンドを使用して、uvicornプロセスの終了を待機</li>
+</ul>
+</li>
+<li>
+<p>終了コードの処理</p>
+<ul>
+<li>修正前: 単純に0で終了</li>
+<li>修正後: 子プロセスの終了コードを取得し、ログに出力。その後、スクリプトは常に0で終了</li>
+</ul>
+</li>
+</ol>
+<h2 id="注意点">注意点</h2>
+<ul>
+<li>uvicornのログメッセージ（例：<code>Worker (pid:28) was sent SIGTERM!</code>）は依然として表示される可能性がありますが、これはuvicornの正常な動作の一部です。</li>
+<li>修正後の実装により、アプリケーションはグレースフルシャットダウンを実行し、コンテナも正常に終了するはずです。</li>
+</ul>
+<h2 id="推奨事項">推奨事項</h2>
+<ul>
+<li>修正後のスクリプトを実装し、再度テストを行う。</li>
+<li>ログ出力を監視し、シャットダウンプロセスが期待通りに動作することを確認する。</li>
+<li>必要に応じて、uvicornの設定やログレベルを調整し、より詳細な情報を取得する。</li>
+</ul>
+<p>この実装により、Docker環境でのAPI開発における信頼性とロバスト性が向上し、特にコンテナのライフサイクル管理が改善されます。修正後のスクリプトは、シグナル処理をより適切に行い、子プロセスの終了を確実に管理します。</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://yskmasumoto.github.io/" >
+    &copy;  ysk-mypage 2024 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
